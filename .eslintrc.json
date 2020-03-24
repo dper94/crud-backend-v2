@@ -14,7 +14,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": "off",
     "func-names": ["error", "never"],
     "consistent-return": "off",
     "implicit-arrow-linebreak": "off",
