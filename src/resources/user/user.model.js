@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -19,9 +20,41 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
     }
   },
   { timestamps: true }
 );
 
-export const User = mongoose.Model('user', UserSchema);
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+
+  bcrypt.hash(this.password, 8, (err, hash) => {
+    if (err) {
+      return next(err);
+    }
+
+    this.password = hash;
+    next();
+  });
+});
+
+userSchema.methods.checkPassword = function(password) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, this.password, (err, same) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(same);
+    });
+  });
+};
+
+export const User = mongoose.model('user', userSchema);
