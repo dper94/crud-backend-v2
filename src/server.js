@@ -3,7 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { config } from './config/config.js';
-import { UserRouter } from './resources/user/user.router.js';
+import { userRouter } from './resources/user/user.router.js';
+import { itemRouter } from './resources/order/order.router.js';
 import { connect } from './utils/db.js';
 
 const app = express();
@@ -15,7 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.use('/api/user', UserRouter);
+app.use('/api/users', userRouter);
+app.use('/api/orders', itemRouter);
 
 export const start = async () => {
   try {
