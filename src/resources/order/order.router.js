@@ -1,17 +1,17 @@
 import express from 'express';
 
-export const itemRouter = express.Router();
+export const orderRouter = express.Router();
 
 const controller = (req, res) => {
   res.send({ data: 'hello' });
 };
 
-itemRouter
+orderRouter
   .route('/')
   .get(controller)
   .post(controller);
 
-itemRouter
+orderRouter
   .route('/:id')
   .get(controller)
   .put(controller)

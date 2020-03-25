@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { config } from './config/config.js';
 import { userRouter } from './resources/user/user.router.js';
-import { itemRouter } from './resources/order/order.router.js';
+import { orderRouter } from './resources/order/order.router.js';
 import { connect } from './utils/db.js';
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use('/api/users', userRouter);
-app.use('/api/orders', itemRouter);
+app.use('/api/orders', orderRouter);
 
 export const start = async () => {
   try {
