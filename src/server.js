@@ -6,6 +6,7 @@ import { config } from './config/config.js';
 import { userRouter } from './resources/user/user.router.js';
 import { orderRouter } from './resources/order/order.router.js';
 import { connect } from './utils/db.js';
+import { protect, signUp, signIn } from './utils/auth.js';
 
 const app = express();
 
@@ -16,6 +17,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+app.post('/signup', signUp);
+app.post('/signin', signIn);
+
+app.use('/api', protect);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 
