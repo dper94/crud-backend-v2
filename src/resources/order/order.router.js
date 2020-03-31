@@ -1,18 +1,15 @@
 import express from 'express';
+import orderControllers from './order.controllers.js';
 
 export const orderRouter = express.Router();
 
-const controller = (req, res) => {
-  res.send({ data: 'hello' });
-};
-
 orderRouter
   .route('/')
-  .get(controller)
-  .post(controller);
+  .get(orderControllers.getMany)
+  .post(orderControllers.createOne);
 
 orderRouter
   .route('/:id')
-  .get(controller)
-  .put(controller)
-  .delete(controller);
+  .get(orderControllers.getOne)
+  .put(orderControllers.updateOne)
+  .delete(orderControllers.deleteOne);
