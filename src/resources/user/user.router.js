@@ -1,12 +1,9 @@
 import express from 'express';
+import { getUser, updateUser } from './user.controllers.js';
 
 export const userRouter = express.Router();
 
-const controller = (req, res) => {
-  res.send({ data: 'hello' });
-};
-
 userRouter
-  .route('/:id')
-  .get(controller)
-  .put(controller);
+  .route('/me')
+  .get(getUser)
+  .put(updateUser);
