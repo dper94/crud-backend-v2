@@ -51,23 +51,26 @@ const createOne = (model) => async (req, res) => {
 
 const updateOne = (model) => async (req, res) => {
   try {
-    const order = await model.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        createdBy: req.user._id
-      },
-      {
-        item: req.body.item,
-        itemQuantity: req.body.itemQuantity
-      },
-      { new: true }
-    );
+    const order = await model
+      .findOne({ _id: req.params.id, createdBy: req.user._id })
+      .exec();
 
     if (!order) {
-      res.status(400).end();
-    } else {
-      res.status(200).send({ data: order });
+      return res.status(400).end();
     }
+
+    if (req.body.item && req.body.itemQuantity) {
+      order.item = req.body.item;
+      order.itemQuantity = req.body.itemQuantity;
+    } else if (req.body.itemQuantity) {
+      order.itemQuantity = req.body.itemQuantity;
+    } else if (req.body.item) {
+      order.item = req.body.item;
+    } else {
+      return res.status(400).end();
+    }
+    await order.save();
+    res.status(200).send({ data: order });
   } catch (error) {
     res.status(400).end();
   }
